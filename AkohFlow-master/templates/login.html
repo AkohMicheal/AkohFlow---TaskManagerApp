@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="form-container mt-4">
+    <h2 class="text-center">Login</h2>
+    <form method="POST" action="{{ url_for('login') }}">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.email.label }}
+            {{ form.email(class="form-control form-input") }}
+            {% for error in form.email.errors %}
+                <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label }}
+            {{ form.password(class="form-control form-input", id="password") }}
+            <label>
+                <input type="checkbox" id="show-password" onclick="togglePassword()"> Show Password
+            </label>
+            {% for error in form.password.errors %}
+                <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-primary form-button") }}
+    </form>
+</div>
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById("password");
+        passwordField.type = passwordField.type === "password" ? "text" : "password";
+    }
+</script>
+{% endblock %}

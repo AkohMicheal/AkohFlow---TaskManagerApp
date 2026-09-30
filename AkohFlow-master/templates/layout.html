@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="description" content="AkohFlow - Task Management System">
+    <meta name="micheal-akoh" content="AkohTech Labs">
+    <title>AkohFlow</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" href="{{ url_for('static', filename='bootstrap.bundle.min') }}"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Brand Logo or Title -->
+            <a class="navbar-brand">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AkohFlow" width="30" height="30" class="d-inline-block align-text-top">
+            </a>
+
+            <!-- Navbar Toggler for Mobile View -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Content -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Left-Side Menus -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tasks') }}">Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addTaskModal">Add Task</a>
+                    </li>
+                </ul>
+
+                <!-- Search Bar -->
+                {% if current_user.is_authenticated and request.endpoint == 'tasks' %}
+                <form class="d-flex me-3" method="GET" action="{{ url_for('tasks') }}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search tasks" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                {% endif %}
+
+                <!-- Right-Side Menus -->
+                <ul class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="btn btn-secondary btn-sm" href="{{ url_for('logout') }}" role="button">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-success btn-sm" href="{{ url_for('register') }}" role="button">Sign Up</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+    <!-- Add Task form here -->
+    <form method="POST" action="{{ url_for('add_task') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="mb-3">
+            <label for="title">Task Title</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="description">Task Description</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Footer -->
+{% if request.endpoint not in ['login', 'edit_task', 'register'] %}
+<hr class="footer-separator">
+<footer class="footer">
+    <div class="footer-content">
+        <ul class="footer-links">
+            <li><a class="footer-link" href="https://www.linkedin.com/in/micheal-akoh">LINKEDIN</a></li>
+            <li><a class="footer-link" href="https://www.instagram.com/akohtech/">INSTAGRAM</a></li>
+            <li><a class="footer-link" href="https://discordapp.com/users/akohmicheal">DISCORD</a></li>
+            <li><a class="footer-link" href="https://github.com/AkohMicheal">GITHUB</a></li>
+        </ul>
+        <p>&copy; 2025 AkohTech Labs. All rights reserved.</p>
+    </div>
+</footer>
+{% endif %}
+</body>
+</html>

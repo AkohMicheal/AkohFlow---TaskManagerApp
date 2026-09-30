@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Task List</h2>
+    {% if search_query %}
+        <h5>Search Results for "{{ search_query }}"</h5>
+    {% endif %}
+
+    {% if tasks %}
+    <div class="task-grid">
+        {% for task in tasks %}
+          <div class="frame task-card">
+            <h5>{{ task.title }}</h5>
+            <p>{{ task.description }}</p>
+            <button 
+  class="btn toggle-task-btn {{ 'btn-success' if task.complete else 'btn-secondary' }} status-bar" 
+  data-task-id="{{ task.id }}">
+  {{ 'Incomplete' if task.complete else 'Complete' }}
+</button>
+
+          </div>
+        {% endfor %}
+      </div>
+{% endif %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('tasks', page=pagination.prev_num) }}">Previous</a>
+                </li>
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+            </li>
+            {% if pagination.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('tasks', page=pagination.next_num) }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="taskToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">
+          Task updated!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const csrfToken = '{{ csrf_token() }}';
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-task-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const task_id = this.getAttribute('data-task-id');
+
+                fetch(`/toggle_task/${task_id}`, {
+                    method: 'POST',
+                    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({})
+                })
+
+                .then(response => response.json())
+                .then(data => {
+    const button = this;
+
+    if (data.completed) {
+        button.classList.remove('btn-secondary');
+        button.classList.add('btn-success');
+        button.textContent = 'Incomplete';
+        showToast('Task marked as complete');
+    } else {
+        button.classList.remove('btn-success');
+        button.classList.add('btn-secondary');
+        button.textContent = 'Complete';
+        showToast('Task marked as incomplete');
+    }
+})
+
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+    function searchTasks() {
+        const searchQuery = document.getElementById('search-input').value;
+        window.location.href = `{{ url_for('tasks') }}?search=${searchQuery}`;
+    }
+
+    function showToast(message) {
+    const toastMessage = document.getElementById('toastMessage');
+    toastMessage.textContent = message;
+
+    const toastElement = new bootstrap.Toast(document.getElementById('taskToast'));
+    toastElement.show();
+}
+</script>
+{% endblock %}

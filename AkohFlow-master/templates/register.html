@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="form-container mt-4">
+    <h2 class="text-center">Sign Up</h2>
+    <form method="POST" action="{{ url_for('register') }}">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.email.label }}
+            {{ form.email(class="form-control form-input") }}
+            {% for error in form.email.errors %}
+                <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.password.label }}
+            {{ form.password(class="form-control form-input") }}
+            {% for error in form.password.errors %}
+                <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control form-input") }}
+            {% for error in form.confirm_password.errors %}
+                <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-primary form-button") }}
+    </form>
+</div>
+{% endblock %}
