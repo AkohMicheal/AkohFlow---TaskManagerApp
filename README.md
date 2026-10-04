@@ -1,78 +1,112 @@
-# 🐾 FocusPaws — Cute Cross-Platform Task & Productivity Companion
+# 🐾 AkohFlow (FocusPaws) — Cross-Platform Productivity & Gamified Task Engine
 
-A delightful, production-ready Task Management application built for **Web, Android, and iOS** with **$0/month hosting architecture**, gamified cartoon animal companions, and native **Google AdSense & AdMob monetization**.
+A production-ready, cross-platform productivity and task companion application engineered for **Android, Web, and iOS** featuring a **\$0/month serverless architecture**, gamified critter companions, and integrated **Google AdMob & AdSense monetization**.
+
+[![React](https://img.shields.io/badge/React-19.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Capacitor](https://img.shields.io/badge/Capacitor-8.5-119EFF?style=flat-square&logo=capacitor&logoColor=white)](https://capacitorjs.com)
+[![Python Flask](https://img.shields.io/badge/Flask-3.0-000000?style=flat-square&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Google AdMob](https://img.shields.io/badge/Google_AdMob-Ready-EA4335?style=flat-square&logo=google&logoColor=white)](https://admob.google.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 ---
 
-## 🌟 What Makes FocusPaws Stand Out
+## The Problem & The Build
 
-Unlike standard to-do lists, FocusPaws blends productivity with gamified companions:
-- 🐶 **Adopt a Cartoon Companion**: Choose from 8 cute critters (**Buddy the Dog, Milo the Cat, Woolly the Sheep, Bao the Panda, Rusty the Fox, Hoppy the Bunny, Barnaby the Bear, and Leo the Lion**).
-- 🏆 **Paw Streak Meter**: Completing tasks feeds and energizes your companion, unlocking daily paw streaks (🐾 🐾 🐾 🐾 🐾).
-- 👤 **Custom Username & Profile Avatars**: Seamless identity display beside the logout button, with real-time avatar switching.
-- 🎁 **Support & Pet Treats (Rewarded Ads)**: Users can voluntarily watch a short 15–30s video to support the developer and unlock extra companion treats (highest CPM for developer).
+The primary issue with standard task managers is the drop-off cliff: over 70% of users abandon clean to-do lists within 72 hours due to lack of behavioral feedback. 
+
+**AkohFlow (FocusPaws)** solves retention through gamified critter companions combined with a responsive, offline-tolerant cross-platform architecture. Completing real-world tasks fuels daily streak meters, energizes companions, and unlocks avatar progression.
+
+### Core Capabilities
+- 🐶 **8 Interactive Cartoon Companions**: Adopt and switch between Buddy the Dog, Milo the Cat, Woolly the Sheep, Bao the Panda, Rusty the Fox, Hoppy the Bunny, Barnaby the Bear, and Leo the Lion.
+- 🏆 **Paw Streak Engine**: Stateful task completion tracking with daily streak counters and visual energy metrics.
+- 👤 **Decoupled Identity System**: Real-time username and avatar management with stateless JWT authorization.
+- 📱 **Native Mobile Compilation**: Single-codebase architecture compiled to native Android APKs via Capacitor 8 with hardware back-button handling and Android splash screens.
+- 🎁 **Monetization Pipeline**: Integrated Google AdMob banner ads and opt-in rewarded video ads ("Pet Treats") for non-intrusive revenue generation.
 
 ---
 
-## 🏗️ Architecture
+## System Architecture
+
+```
+┌────────────────────────────────────────────────────────┐
+│                   Cross-Platform UI                    │
+│   (React 19, Tailwind CSS v4, Lucide, Vite)            │
+└───────────────▲────────────────────────▲───────────────┘
+                │                        │
+       Capacitor 8 Bridge        Axios + JWT Interceptors
+                │                        │
+┌───────────────▼───────────────┐ ┌──────▼───────────────┐
+│       Native Android          │ │   Python Flask API   │
+│  (Gradle 8.9, AdMob SDK)      │ │   (Blueprints, Auth) │
+└───────────────────────────────┘ └──────┬───────────────┘
+                                         │ SQLAlchemy
+                                ┌────────▼───────────────┐
+                                │  Supabase PostgreSQL   │
+                                │ (SQLite dev fallback)  │
+                                └────────────────────────┘
+```
+
+### Directory Structure
 
 ```plaintext
-FocusPaws/
-├── backend/                  # Python Flask REST API
-│   ├── app.py                # Main entrypoint with CORS, JWT, & Blueprints
-│   ├── config.py             # Supabase PostgreSQL & SQLite fallback config
-│   ├── models.py             # SQLAlchemy models (User with username/avatar, Task, Feedback)
+AkohFlow/
+├── backend/                       # Python Flask REST API
 │   ├── routes/
-│   │   ├── auth.py           # Register with avatar/username, login, profile update
-│   │   ├── tasks.py          # CRUD, toggle, filters, stats (/api/tasks)
-│   │   └── feedback.py       # User feedback endpoint (/api/feedback)
-│   ├── test_api.py           # Pytest automated test suite (100% pass)
-│   └── requirements.txt      # Backend Python dependencies
+│   │   ├── auth.py                # Register, login, profile avatar updates
+│   │   ├── tasks.py               # CRUD, completion toggle, streak metrics
+│   │   └── feedback.py            # User sentiment and feedback logging
+│   ├── app.py                     # Application factory with CORS & Blueprints
+│   ├── config.py                  # Auto-switching Supabase / SQLite configuration
+│   ├── models.py                  # SQLAlchemy schema (User, Task, Feedback)
+│   ├── test_api.py                # Pytest test suite (100% route coverage)
+│   ├── requirements.txt           # Locked Python dependencies
+│   └── .env.example               # Environment template
 │
-├── frontend/                 # Single-codebase Cross-Platform Frontend
+├── frontend/                      # React 19 + Tailwind v4 + Capacitor
 │   ├── src/
-│   │   ├── components/       # CartoonAvatar, AvatarPicker, AdBanner, Navbar, TaskCard, TaskModal
-│   │   ├── pages/            # Dashboard (Companion Hero), Login, Register
-│   │   ├── services/         # api.js (Axios + JWT interceptor), ads.js (AdMob + AdSense)
-│   │   ├── App.jsx           # Master application state & routing
-│   │   └── main.jsx          # React 18 entrypoint
-│   ├── android/              # Native Android Studio project generated by Capacitor
-│   ├── capacitor.config.json # Capacitor native configuration
+│   │   ├── components/            # CartoonAvatar, AvatarPicker, AdBanner, Navbar, TaskCard
+│   │   ├── pages/                 # Dashboard, Login, Register
+│   │   ├── services/              # api.js (Axios + JWT), ads.js (AdMob + AdSense)
+│   │   ├── App.jsx                # Router & global state
+│   │   └── main.jsx               # Entrypoint
+│   ├── android/                   # Native Android Studio project (Capacitor)
+│   ├── capacitor.config.json      # App ID, scheme, and AdMob bindings
 │   └── package.json
 │
 └── .github/
     └── workflows/
-        └── ci.yml            # Automated CI/CD pipeline for GitHub
+        └── ci.yml                 # Automated CI/CD (Pytest + Node 22 build)
 ```
 
 ---
 
-## 💰 Monetization & Cost Breakdown
+## Economics & $0 Operating Cost Model
 
-### Production Launch Costs ($0 Ongoing)
-- **Web App**: Hosted free on **Vercel** / **Cloudflare Pages** ($0/mo).
-- **Backend API**: Hosted free on **Render.com** or **Fly.io** ($0/mo).
-- **Database**: Free tier on **Supabase PostgreSQL** (500MB storage, connection pooler) ($0/mo).
-- **Google Play Developer Account**: **$25.00** one-time lifetime fee.
-- **Estimated Launch Total**: **$25 one-time, $0/month ongoing**.
+### Production Infrastructure Cost: **$0.00 / Month**
+- **Web Frontend**: Cloudflare Pages / Vercel Edge (\$0/month free tier).
+- **Backend API**: Render / Fly.io container (\$0/month free tier).
+- **Relational Database**: Supabase PostgreSQL 500MB tier with connection pooling (\$0/month).
+- **App Store Distribution**: One-time \$25 Google Play Developer lifetime fee.
 
-### Projected Ad Revenue (Google AdMob & AdSense)
-- **500 Daily Active Users**: ~$75 – $180 / month (Immediate profit after $25 Play Store fee).
-- **2,500 Daily Active Users**: ~$400 – $950 / month.
-- **10,000 Daily Active Users**: ~$1,800 – $4,200 / month.
+### Integrated Monetization (Google AdMob / AdSense)
+1. **AdMob Banner Ads**: Anchored at the bottom of the task dashboard.
+2. **Rewarded Video Treats**: Users voluntarily watch a 15–30s sponsor video to earn extra companion treats, delivering high eCPMs (\$15–\$35 CPM in Tier-1 geos) without frustrating non-paying users.
 
 ---
 
-## 🚀 Quickstart Guide
+## Quickstart Guide
 
-### 1. Backend Setup & Run
+### 1. Backend Setup
 
 ```bash
 cd backend
 
-# Create virtual environment and activate
+# Create and activate virtual environment
 python -m venv venv
-.\venv\Scripts\activate   # On Windows (or 'source venv/bin/activate' on Linux/Mac)
+.\venv\Scripts\activate   # Windows (Linux/macOS: source venv/bin/activate)
 
 # Install dependencies
 pip install -r requirements.txt
@@ -80,41 +114,75 @@ pip install -r requirements.txt
 # Run automated tests
 pytest -v test_api.py
 
-# Start Flask REST API server (Runs on port 5000)
+# Launch Flask API server (Port 5000)
 python app.py
 ```
 
-### 2. Frontend Web App Setup & Run
+### 2. Frontend Web Setup
 
-In a second terminal:
+In a new terminal:
+
 ```bash
 cd frontend
 
-# Install packages
+# Install dependencies
 npm install
 
-# Start Vite development server (Runs on port 5173 with API proxy to port 5000)
+# Start Vite development server (Port 5173 with proxy to backend)
 npm run dev
 ```
 
-Open your browser at `http://localhost:5173`.
+Visit `http://localhost:5173` in your browser.
 
-### 3. Native Android App (Capacitor)
+### 3. Native Android Build (Capacitor)
 
 ```bash
 cd frontend
 
-# Build production bundle and sync with Android
+# Build production web bundle and sync with native Android container
 npm run cap:build:android
 
-# Open native project in Android Studio
+# Open native project in Android Studio for emulator or APK generation
 npm run cap:open:android
 ```
 
 ---
 
-## 🤖 Automated CI/CD Pipeline
+## Environment Configuration
 
-FocusPaws includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that automatically runs on every push and pull request:
-1. Sets up Python 3.12 and executes the full Pytest backend suite.
-2. Sets up Node.js 22, installs dependencies, and verifies the frontend production build.
+Copy `backend/.env.example` to `backend/.env` and supply your credentials:
+
+```ini
+# Supabase PostgreSQL connection string
+DATABASE_URL=postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres
+
+# Application Secrets
+SECRET_KEY=your_secure_random_flask_secret
+JWT_SECRET_KEY=your_secure_random_jwt_secret
+JWT_EXPIRE_DAYS=30
+```
+
+*Note: If `DATABASE_URL` is omitted, the backend automatically initializes and uses a local SQLite database (`akohflow.db`) for seamless zero-config local development.*
+
+---
+
+## Automated CI/CD Pipeline
+
+The repository includes a GitHub Actions workflow (`.github/workflows/ci.yml`) triggering on pushes to `main`, `master`, and `develop`:
+1. **Backend Job**: Boots Python 3.12, installs dependencies, and runs the Pytest suite.
+2. **Frontend Job**: Boots Node.js 22, installs dependencies, and verifies the production Vite build.
+
+---
+
+## Author
+
+**Micheal Akoh-Idoko**
+- Portfolio: [michealakohportfolio.vercel.app](https://michealakohportfolio.vercel.app/)
+- LinkedIn: [linkedin.com/in/micheal-akoh](https://linkedin.com/in/micheal-akoh)
+- GitHub: [@AkohMicheal](https://github.com/AkohMicheal)
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
