@@ -5,6 +5,10 @@ backend/.venv/
 *.py[cod]
 *$py.class
 backend/.env
+frontend/.env
+.env
+.env.local
+*.env
 backend/*.db
 backend/.pytest_cache/
 
