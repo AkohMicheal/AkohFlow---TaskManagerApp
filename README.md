@@ -2,6 +2,7 @@
 
 A production-ready, cross-platform productivity and task companion application engineered for **Android, Web, and iOS** featuring a **\$0/month serverless architecture**, gamified critter companions, and integrated **Google AdMob & AdSense monetization**.
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-focuspaw.app-orange?style=flat-square&logo=vercel&logoColor=white)](https://focuspaw.app)
 [![React](https://img.shields.io/badge/React-19.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
@@ -10,6 +11,7 @@ A production-ready, cross-platform productivity and task companion application e
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![Google AdMob](https://img.shields.io/badge/Google_AdMob-Ready-EA4335?style=flat-square&logo=google&logoColor=white)](https://admob.google.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
 
 ---
 
