@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, ArrowRight, PawPrint, Sparkles } from 'lucide-react';
-import { authService } from '../services/api';
+import { authService, extractErrorMessage } from '../services/api';
 import AvatarPicker from '../components/AvatarPicker';
 import CartoonAvatar from '../components/CartoonAvatar';
 
@@ -42,11 +42,12 @@ export default function Register({ onAuthSuccess, onSwitchToLogin }) {
       });
       onAuthSuccess(data.user);
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed.');
+      setError(extractErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-8">

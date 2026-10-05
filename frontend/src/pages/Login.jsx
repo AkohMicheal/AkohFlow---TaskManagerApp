@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Lock, ArrowRight, PawPrint } from 'lucide-react';
-import { authService } from '../services/api';
+import { authService, extractErrorMessage } from '../services/api';
 
 export default function Login({ onAuthSuccess, onSwitchToRegister }) {
   const [identifier, setIdentifier] = useState('');
@@ -17,11 +17,12 @@ export default function Login({ onAuthSuccess, onSwitchToRegister }) {
       const data = await authService.login(identifier.trim(), password);
       onAuthSuccess(data.user);
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please check your username/email and password.');
+      setError(extractErrorMessage(err, 'Login failed. Please check your username/email and password.'));
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-8">

@@ -45,9 +45,10 @@ export default function Dashboard({ user }) {
         taskService.getStats(),
       ]);
 
-      setTasks(taskRes.tasks || []);
-      setStats(statsRes);
+      setTasks(taskRes?.tasks || []);
+      setStats(statsRes || { total: 0, completed: 0, active: 0 });
       setError('');
+
     } catch (err) {
       setError('Failed to load tasks. Check connection to API.');
     } finally {
@@ -78,8 +79,9 @@ export default function Dashboard({ user }) {
     try {
       await taskService.toggle(taskId);
       const statsRes = await taskService.getStats();
-      setStats(statsRes);
+      if (statsRes) setStats(statsRes);
     } catch (err) {
+
       fetchTasks(); // Rollback if failed
     }
   };

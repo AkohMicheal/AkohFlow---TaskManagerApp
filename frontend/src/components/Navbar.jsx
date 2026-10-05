@@ -99,12 +99,13 @@ export default function Navbar({ user, onUpdateUser, onOpenFeedback, onRewardUnl
                 {/* Username */}
                 <div className="flex flex-col text-left">
                   <span className="text-xs font-bold text-slate-800 max-w-[110px] truncate leading-tight">
-                    {user.username || user.email.split('@')[0]}
+                    {user.username || (user.email ? user.email.split('@')[0] : 'Companion Master')}
                   </span>
                   <span className="text-[10px] text-indigo-600 font-medium capitalize">
                     {user.avatar || 'Companion'}
                   </span>
                 </div>
+
 
                 {/* Logout Button */}
                 <button
