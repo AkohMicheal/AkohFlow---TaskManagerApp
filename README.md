@@ -2,7 +2,7 @@
 
 A production-ready, cross-platform productivity and task companion application engineered for **Android, Web, and iOS** featuring a **\$0/month serverless architecture**, gamified critter companions, and integrated **Google AdMob & AdSense monetization**.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-focuspaw.app-orange?style=flat-square&logo=vercel&logoColor=white)](https://focuspaw.app)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-focuspawakoh.vercel.app-orange?style=flat-square&logo=vercel&logoColor=white)](https://focuspawakoh.vercel.app/)
 [![React](https://img.shields.io/badge/React-19.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
